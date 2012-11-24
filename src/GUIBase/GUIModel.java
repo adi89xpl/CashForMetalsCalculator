@@ -7,7 +7,7 @@ import GUIBase.EventHandlers.*;
 
 public class GUIModel {
     //Frame
-    private JFrame frame = new JFrame("Cash For Metal Calculator");
+    private JFrame frame = new JFrame("Cash For Metals Calculator");
     //Panels - It will be 2 columns with 4 rows
     //each panel will contain one button to handle the requests
     private JPanel pnlCreatePersonal = new JPanel();
@@ -31,26 +31,26 @@ public class GUIModel {
     public GUIModel()
     {
         frame.getContentPane().setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        pnlDisplayGrandSummary.setPreferredSize(new Dimension(200, 60));
-        pnlDisplayCustomerSummary.setPreferredSize(new Dimension(200, 60));
-        pnlDisplayCustomer.setPreferredSize(new Dimension(200, 60));
-        pnlRecordWithdrawal.setPreferredSize(new Dimension(200, 60));
-        pnlRecordTransaction.setPreferredSize(new Dimension(200, 60));
-        pnlCreateCommercial.setPreferredSize(new Dimension(200, 60));
-        pnlCreatePersonal.setPreferredSize(new Dimension(200, 60));
+        pnlDisplayGrandSummary.setPreferredSize(new Dimension(225, 60));
+        pnlDisplayCustomerSummary.setPreferredSize(new Dimension(225, 60));
+        pnlDisplayCustomer.setPreferredSize(new Dimension(225, 60));
+        pnlRecordWithdrawal.setPreferredSize(new Dimension(225, 60));
+        pnlRecordTransaction.setPreferredSize(new Dimension(225, 60));
+        pnlCreateCommercial.setPreferredSize(new Dimension(225, 60));
+        pnlCreatePersonal.setPreferredSize(new Dimension(225, 60));
         
-        btnExit.setPreferredSize(new Dimension(200, 50));
-        btnDisplayGrandSummary.setPreferredSize(new Dimension(200, 50));
-        btnDisplayCustomerSummary.setPreferredSize(new Dimension(200, 50));
-        btnDisplayCustomer.setPreferredSize(new Dimension(200, 50));
-        btnRecordWithdrawal.setPreferredSize(new Dimension(200, 50));
-        btnRecordTransaction.setPreferredSize(new Dimension(200, 50));
-        btnCreateCommercial.setPreferredSize(new Dimension(200, 50));
-        btnCreatePersonal.setPreferredSize(new Dimension(200, 50));
+        btnExit.setPreferredSize(new Dimension(225, 50));
+        btnDisplayGrandSummary.setPreferredSize(new Dimension(225, 50));
+        btnDisplayCustomerSummary.setPreferredSize(new Dimension(225, 50));
+        btnDisplayCustomer.setPreferredSize(new Dimension(225, 50));
+        btnRecordWithdrawal.setPreferredSize(new Dimension(225, 50));
+        btnRecordTransaction.setPreferredSize(new Dimension(225, 50));
+        btnCreateCommercial.setPreferredSize(new Dimension(225, 50));
+        btnCreatePersonal.setPreferredSize(new Dimension(225, 50));
         
         //Add ActionListeners to Buttons
         btnExit.addActionListener(new btnExit_Handler(frame));
-        btnCreatePersonal.addActionListener(new btnCreatePersonal_Handler());
+        btnCreatePersonal.addActionListener(new btnCreatePersonal_Handler(frame));
         
         //Let's add the buttons to the panels and then panels to the frame
         pnlExit.add(btnExit);
@@ -74,7 +74,7 @@ public class GUIModel {
         frame.getContentPane().add(pnlCreateCommercial, FlowLayout.LEFT);
         frame.getContentPane().add(pnlCreatePersonal, FlowLayout.LEFT);
         
-        frame.setPreferredSize(new Dimension(450, 300));
+        frame.setPreferredSize(new Dimension(500, 300));
         frame.setResizable(false);
         
         frame.addWindowListener(new ListenCloseWindow());

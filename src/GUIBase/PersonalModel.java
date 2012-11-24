@@ -1,7 +1,9 @@
 package GUIBase;
 
 import java.awt.ComponentOrientation;
+import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JButton;
@@ -9,11 +11,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import GUIBase.EventHandlers.*;
 
-public class PersonalModel {
+public class PersonalModel{
    //Frame
     private JFrame frame = new JFrame("Create Personal Customer");
     //Panels
+    private JPanel pnlButtons = new JPanel();
     private JPanel pnlName = new JPanel();
     private JPanel pnlAddress = new JPanel();
     private JPanel pnlHomePhone = new JPanel();
@@ -37,16 +41,57 @@ public class PersonalModel {
         frame.setPreferredSize(new Dimension(450, 300));
         frame.setResizable(false);
         
-        pnlName.setPreferredSize(new Dimension(50, 150));
-        pnlAddress.setPreferredSize(new Dimension(50, 150));
-        pnlHomePhone.setPreferredSize(new Dimension(50, 150));
-        pnlWorkPhone.setPreferredSize(new Dimension(50, 150));
+        pnlName.setPreferredSize(new Dimension(450, 50));
+        pnlName.setLayout(new FlowLayout());
+        pnlAddress.setPreferredSize(new Dimension(450, 50));
+        pnlAddress.setLayout(new FlowLayout());
+        pnlHomePhone.setPreferredSize(new Dimension(450, 50));
+        pnlHomePhone.setLayout(new FlowLayout());
+        pnlWorkPhone.setPreferredSize(new Dimension(450, 50));
+        pnlWorkPhone.setLayout(new FlowLayout());
+        
+        //Add buttons and labels to panels
+        lblWorkPhone.setPreferredSize(new Dimension(450, 20));
+        lblWorkPhone.setHorizontalAlignment(JLabel.CENTER);
+        txtWorkPhone.setPreferredSize(new Dimension(250, 20));
+        pnlWorkPhone.add(lblWorkPhone);
+        pnlWorkPhone.add(txtWorkPhone);
+        
+        lblHomePhone.setPreferredSize(new Dimension(450, 20));
+        lblHomePhone.setHorizontalAlignment(JLabel.CENTER);
+        txtHomePhone.setPreferredSize(new Dimension(250, 20));
+        pnlHomePhone.add(lblHomePhone);
+        pnlHomePhone.add(txtHomePhone);
         
         
+        lblAddress.setPreferredSize(new Dimension(450, 20));
+        lblAddress.setHorizontalAlignment(JLabel.CENTER);
+        txtAddress.setPreferredSize(new Dimension(250, 20));
+        pnlAddress.add(lblAddress);
+        pnlAddress.add(txtAddress);
         
+        lblName.setPreferredSize(new Dimension(450, 20));
+        lblName.setHorizontalAlignment(JLabel.CENTER);
+        txtName.setPreferredSize(new Dimension(250, 20));
+        pnlName.add(lblName);
+        pnlName.add(txtName);
         
+        btnAddPersonal.setPreferredSize(new Dimension(200, 30));
+        btnCancel.setPreferredSize(new Dimension(200, 30));
+        pnlButtons.add(btnAddPersonal);
+        pnlButtons.add(btnCancel);
+        
+        Container framePane = frame.getContentPane();
+        framePane.setLayout(new FlowLayout());
+        framePane.add(pnlButtons, FlowLayout.LEFT);
+        framePane.add(pnlWorkPhone, FlowLayout.LEFT);
+        framePane.add(pnlHomePhone, FlowLayout.LEFT);
+        framePane.add(pnlAddress, FlowLayout.LEFT);
+        framePane.add(pnlName, FlowLayout.LEFT);
         
         frame.addWindowListener(new PersonalModel.ListenCloseWindow());
+        
+        btnCancel.addActionListener(new AddPersonal_Cancel_Handler( frame));
     }
     
     public class ListenCloseWindow extends WindowAdapter {
