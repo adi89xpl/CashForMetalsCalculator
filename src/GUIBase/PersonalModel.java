@@ -1,21 +1,17 @@
 package GUIBase;
 
-import java.awt.ComponentOrientation;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import GUIBase.EventHandlers.*;
+import javax.swing.JFrame;
 
-public class PersonalModel{
+public class PersonalModel {
    //Frame
-    private JFrame frame = new JFrame("Create Personal Customer");
+    private JPanel PersonalModelWrapper = new JPanel();
     //Panels
     private JPanel pnlButtons = new JPanel();
     private JPanel pnlName = new JPanel();
@@ -36,11 +32,10 @@ public class PersonalModel{
     private JButton btnAddPersonal = new JButton("Add Customer");
     private JButton btnCancel = new JButton("Cancel");
     
-    public PersonalModel(){
-        frame.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        frame.setPreferredSize(new Dimension(450, 300));
-        frame.setResizable(false);
-        
+    private JFrame mainFrame;
+    public PersonalModel(JFrame mFrame){
+        mainFrame = mFrame;
+        //Set the FlowLayout and the Dimensions for panels
         pnlName.setPreferredSize(new Dimension(450, 50));
         pnlName.setLayout(new FlowLayout());
         pnlAddress.setPreferredSize(new Dimension(450, 50));
@@ -51,60 +46,49 @@ public class PersonalModel{
         pnlWorkPhone.setLayout(new FlowLayout());
         
         //Add buttons and labels to panels
+        //Work
         lblWorkPhone.setPreferredSize(new Dimension(450, 20));
         lblWorkPhone.setHorizontalAlignment(JLabel.CENTER);
         txtWorkPhone.setPreferredSize(new Dimension(250, 20));
         pnlWorkPhone.add(lblWorkPhone);
         pnlWorkPhone.add(txtWorkPhone);
-        
+        //Home
         lblHomePhone.setPreferredSize(new Dimension(450, 20));
         lblHomePhone.setHorizontalAlignment(JLabel.CENTER);
         txtHomePhone.setPreferredSize(new Dimension(250, 20));
         pnlHomePhone.add(lblHomePhone);
         pnlHomePhone.add(txtHomePhone);
-        
-        
+        //Address
         lblAddress.setPreferredSize(new Dimension(450, 20));
         lblAddress.setHorizontalAlignment(JLabel.CENTER);
         txtAddress.setPreferredSize(new Dimension(250, 20));
         pnlAddress.add(lblAddress);
         pnlAddress.add(txtAddress);
-        
+        //Name
         lblName.setPreferredSize(new Dimension(450, 20));
         lblName.setHorizontalAlignment(JLabel.CENTER);
         txtName.setPreferredSize(new Dimension(250, 20));
         pnlName.add(lblName);
         pnlName.add(txtName);
-        
+        //Buttons
         btnAddPersonal.setPreferredSize(new Dimension(200, 30));
         btnCancel.setPreferredSize(new Dimension(200, 30));
         pnlButtons.add(btnAddPersonal);
         pnlButtons.add(btnCancel);
         
-        Container framePane = frame.getContentPane();
-        framePane.setLayout(new FlowLayout());
-        framePane.add(pnlButtons, FlowLayout.LEFT);
-        framePane.add(pnlWorkPhone, FlowLayout.LEFT);
-        framePane.add(pnlHomePhone, FlowLayout.LEFT);
-        framePane.add(pnlAddress, FlowLayout.LEFT);
-        framePane.add(pnlName, FlowLayout.LEFT);
-        
-        frame.addWindowListener(new PersonalModel.ListenCloseWindow());
-        
-        btnCancel.addActionListener(new AddPersonal_Cancel_Handler( frame));
+        //Container framePane = frame.getContentPane();
+        PersonalModelWrapper.setLayout(new FlowLayout());
+        PersonalModelWrapper.add(pnlButtons, FlowLayout.LEFT);
+        PersonalModelWrapper.add(pnlWorkPhone, FlowLayout.LEFT);
+        PersonalModelWrapper.add(pnlHomePhone, FlowLayout.LEFT);
+        PersonalModelWrapper.add(pnlAddress, FlowLayout.LEFT);
+        PersonalModelWrapper.add(pnlName, FlowLayout.LEFT);
+        //Add the event handler to the button
+        btnCancel.addActionListener(new PersonalModel_btnCancel_Handler(mainFrame));
+        btnAddPersonal.addActionListener(new PersonalModel_btnAddNew_Handler(mainFrame, txtName, txtAddress, txtHomePhone, txtWorkPhone));
     }
     
-    public class ListenCloseWindow extends WindowAdapter {
-        public void WindowClose(WindowEvent e)
-        {
-            System.exit(0);
-        }
-    }
-    
-    //Method to display the frame
-    public void DisplayFrame(){
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
+    public JPanel getContentPanel(){
+        return PersonalModelWrapper;
     }
 }

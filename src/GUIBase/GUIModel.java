@@ -1,15 +1,14 @@
 package GUIBase;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import javax.swing.*;
 import GUIBase.EventHandlers.*;
 
 public class GUIModel {
     //Frame
-    private JFrame frame = new JFrame("Cash For Metals Calculator");
+    //private JFrame frame = new JFrame("Cash For Metals Calculator");
     //Panels - It will be 2 columns with 4 rows
     //each panel will contain one button to handle the requests
+    private JPanel GUIModelWrapper = new JPanel();
     private JPanel pnlCreatePersonal = new JPanel();
     private JPanel pnlCreateCommercial = new JPanel();
     private JPanel pnlRecordTransaction = new JPanel();
@@ -30,7 +29,7 @@ public class GUIModel {
     
     public GUIModel()
     {
-        frame.getContentPane().setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        //frame.getContentPane().setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         pnlDisplayGrandSummary.setPreferredSize(new Dimension(225, 60));
         pnlDisplayCustomerSummary.setPreferredSize(new Dimension(225, 60));
         pnlDisplayCustomer.setPreferredSize(new Dimension(225, 60));
@@ -48,11 +47,9 @@ public class GUIModel {
         btnCreateCommercial.setPreferredSize(new Dimension(225, 50));
         btnCreatePersonal.setPreferredSize(new Dimension(225, 50));
         
-        //Add ActionListeners to Buttons
-        btnExit.addActionListener(new btnExit_Handler(frame));
-        btnCreatePersonal.addActionListener(new btnCreatePersonal_Handler(frame));
         
-        //Let's add the buttons to the panels and then panels to the frame
+        
+        //Let's add the buttons to the panels and then panels to the wrapper panel
         pnlExit.add(btnExit);
         pnlDisplayGrandSummary.add(btnDisplayGrandSummary);
         pnlDisplayCustomerSummary.add(btnDisplayCustomerSummary);
@@ -64,35 +61,28 @@ public class GUIModel {
         
         //Let's setup the flow layout for this application's interface
         //and add the panels to the frame
-        frame.getContentPane().setLayout(new FlowLayout());
-        frame.getContentPane().add(pnlExit, FlowLayout.LEFT);
-        frame.getContentPane().add(pnlDisplayGrandSummary, FlowLayout.LEFT);
-        frame.getContentPane().add(pnlDisplayCustomerSummary, FlowLayout.LEFT);
-        frame.getContentPane().add(pnlDisplayCustomer, FlowLayout.LEFT);
-        frame.getContentPane().add(pnlRecordWithdrawal, FlowLayout.LEFT);
-        frame.getContentPane().add(pnlRecordTransaction, FlowLayout.LEFT);
-        frame.getContentPane().add(pnlCreateCommercial, FlowLayout.LEFT);
-        frame.getContentPane().add(pnlCreatePersonal, FlowLayout.LEFT);
-        
-        frame.setPreferredSize(new Dimension(500, 300));
-        frame.setResizable(false);
-        
-        frame.addWindowListener(new ListenCloseWindow());
+        GUIModelWrapper.setLayout(new FlowLayout());
+        GUIModelWrapper.add(pnlExit, FlowLayout.LEFT);
+        GUIModelWrapper.add(pnlDisplayGrandSummary, FlowLayout.LEFT);
+        GUIModelWrapper.add(pnlDisplayCustomerSummary, FlowLayout.LEFT);
+        GUIModelWrapper.add(pnlDisplayCustomer, FlowLayout.LEFT);
+        GUIModelWrapper.add(pnlRecordWithdrawal, FlowLayout.LEFT);
+        GUIModelWrapper.add(pnlRecordTransaction, FlowLayout.LEFT);
+        GUIModelWrapper.add(pnlCreateCommercial, FlowLayout.LEFT);
+        GUIModelWrapper.add(pnlCreatePersonal, FlowLayout.LEFT);
     }
     
-    public class ListenCloseWindow extends WindowAdapter{
-        public void WindowClose(WindowEvent e)
-        {
-            System.exit(0);
-        }
+    public void addEventHandlers(JFrame mainFrame){
+        //Add ActionListeners to Buttons
+        btnExit.addActionListener(new btnExit_Handler(mainFrame));
+        btnCreatePersonal.addActionListener(new GUIModel_btnCreatePersonal_Handler(mainFrame));
     }
     
-    //Method to display the frame
-    public void DisplayFrame(){
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
+    public JPanel getContentPanel(){
+        return GUIModelWrapper;
     }
+    
+   
 }
 
 
