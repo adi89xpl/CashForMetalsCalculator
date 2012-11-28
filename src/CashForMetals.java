@@ -1,6 +1,6 @@
 import GUIBase.GUIBase;
 import GUIBase.GUIModel;
-import GUIBase.Helper.*;
+import GUIBase.Helper.GUIHelper;
 
 public class CashForMetals {
     public static void main(String[] args) {

@@ -1,7 +1,9 @@
 package GUIBase.Helper;
 
+import DataLayer.Account;
 import DataLayer.CommercialCustomer;
 import DataLayer.PersonalCustomer;
+import DataLayer.Transaction;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.JFrame;
@@ -100,7 +102,6 @@ public final class XMLHelper {
         
         //Add the node to the CustomerDoc Root
         CustomerDoc.getDocumentElement().appendChild(Personal);
-        SaveCustomerFile(CustomerDoc, mainFrame);
     }
     
     public static void AddCommercial(Document CustomerDoc, CommercialCustomer cCustomer, JFrame mainFrame){
@@ -130,7 +131,19 @@ public final class XMLHelper {
         
         //Add the node to the CustomerDoc
         CustomerDoc.appendChild(Personal);
+        
+    }
+    
+    private static void CreateAccount(Document CustomerDoc, Account cAccount, JFrame mainFrame){
+        //TODO
+        Element aElem = CustomerDoc.createElement("account");
+        aElem.setAttribute("accoundno", Long.toString(cAccount.getAccountNo()));
+        aElem.setAttribute("accountbalance", )
         SaveCustomerFile(CustomerDoc, mainFrame);
+    }
+    
+    private static void CreateTransaction(Document CustomerDoc, Transaction t){
+        //TODO
     }
     
     private static void SaveCustomerFile(Document CustomerDoc, JFrame mainFrame){

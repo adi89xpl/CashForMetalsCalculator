@@ -3,7 +3,7 @@ package DataLayer;
 import GUIBase.Helper.*;
 
 public class Customer {
-    private Long CustomerID;
+    private long CustomerID;
     private String CustomerName;
     private String CustomerAddress;
     
