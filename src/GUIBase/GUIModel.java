@@ -76,6 +76,7 @@ public class GUIModel {
         //Add ActionListeners to Buttons
         btnExit.addActionListener(new btnExit_Handler(mainFrame));
         btnCreatePersonal.addActionListener(new GUIModel_btnCreatePersonal_Handler(mainFrame));
+        btnCreateCommercial.addActionListener(new GUIModel_btnCreateCommercial_Handler(mainFrame));
     }
     
     public JPanel getContentPanel(){

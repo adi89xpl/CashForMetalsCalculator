@@ -2,6 +2,7 @@ package GUIBase.Helper;
 
 import DataLayer.Account;
 import DataLayer.CommercialCustomer;
+import DataLayer.Customer;
 import DataLayer.PersonalCustomer;
 import DataLayer.Transaction;
 import java.io.File;
@@ -11,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -35,7 +37,7 @@ public final class XMLHelper {
             DocumentBuilderFactory Factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder Build = Factory.newDocumentBuilder();
             CustomerDoc = Build.newDocument();
-            Element rootElem = CustomerDoc.createElement("customers");
+            Element rootElem = CustomerDoc.createElement("Customers");
             CustomerDoc.appendChild(rootElem);
         }
         catch (ParserConfigurationException ex){
@@ -76,74 +78,93 @@ public final class XMLHelper {
     }
     
     public static void AddPersonal(Document CustomerDoc, PersonalCustomer pCustomer, JFrame mainFrame){
-        Element Personal = CustomerDoc.createElement("customer");
-        Personal.setAttribute("id", Long.toString(pCustomer.getCustomerID()));
-        Personal.setAttribute("type", "personal");
+        Element Personal = CustomerDoc.createElement("Customer");
+        Personal.setAttribute("Id", Long.toString(pCustomer.getCustomerID()));
+        Personal.setAttribute("AccountType", "Personal");
         
         Element TempAttr = CustomerDoc.createElement("name");
         TempAttr.appendChild(CustomerDoc.createTextNode(pCustomer.getName()));
         Personal.appendChild(TempAttr);
         
-        TempAttr = CustomerDoc.createElement("address");
+        TempAttr = CustomerDoc.createElement("Address");
         TempAttr.appendChild(CustomerDoc.createTextNode(pCustomer.getCustomerAddress()));
         Personal.appendChild(TempAttr);
         
-        TempAttr = CustomerDoc.createElement("homephone");
+        TempAttr = CustomerDoc.createElement("HomePhone");
         TempAttr.appendChild(CustomerDoc.createTextNode(pCustomer.getHomePhone()));
         Personal.appendChild(TempAttr);
         
-        TempAttr = CustomerDoc.createElement("workphone");
+        TempAttr = CustomerDoc.createElement("WorkPhone");
         TempAttr.appendChild(CustomerDoc.createTextNode(pCustomer.getWorkPhone()));
         Personal.appendChild(TempAttr);
         
-        //Just create the Accounts container
-        TempAttr = CustomerDoc.createElement("accounts");
-        Personal.appendChild(TempAttr);
+        //Add an account to a created customer
+        Element CustomerAccountElem = CreateAccount(CustomerDoc, mainFrame, pCustomer);
         
-        //Add the node to the CustomerDoc Root
-        CustomerDoc.getDocumentElement().appendChild(Personal);
+        //Add the CustomerAccountElement to the Customer element
+        Personal.appendChild(CustomerAccountElem);
+        
+        //Add the node to the CustomerDoc root element ("Customer")
+        Element Root = CustomerDoc.getDocumentElement();
+        Root.appendChild(Personal);
+        
+        //Save the entire file
+       SaveCustomerFile(CustomerDoc, mainFrame);
     }
     
     public static void AddCommercial(Document CustomerDoc, CommercialCustomer cCustomer, JFrame mainFrame){
-        Element Personal = CustomerDoc.createElement("customer");
-        Personal.setAttribute("id", Long.toString(cCustomer.getCustomerID()));
-        Personal.setAttribute("type", "commercial");
+        Element Commercial = CustomerDoc.createElement("Customer");
+        Commercial.setAttribute("Id", Long.toString(cCustomer.getCustomerID()));
+        Commercial.setAttribute("AccountType", "Commercial");
         
-        Element TempAttr = CustomerDoc.createElement("name");
+        Element TempAttr = CustomerDoc.createElement("Name");
         TempAttr.appendChild(CustomerDoc.createTextNode(cCustomer.getName()));
-        Personal.appendChild(TempAttr);
+        Commercial.appendChild(TempAttr);
         
-        TempAttr = CustomerDoc.createElement("address");
+        TempAttr = CustomerDoc.createElement("Address");
         TempAttr.appendChild(CustomerDoc.createTextNode(cCustomer.getCustomerAddress()));
-        Personal.appendChild(TempAttr);
+        Commercial.appendChild(TempAttr);
         
-        TempAttr = CustomerDoc.createElement("contactperson");
+        TempAttr = CustomerDoc.createElement("ContactPerson");
         TempAttr.appendChild(CustomerDoc.createTextNode(cCustomer.getContactPerson()));
-        Personal.appendChild(TempAttr);
+        Commercial.appendChild(TempAttr);
         
-        TempAttr = CustomerDoc.createElement("contactpersonphone");
+        TempAttr = CustomerDoc.createElement("ContactPersonPhone");
         TempAttr.appendChild(CustomerDoc.createTextNode(cCustomer.getContactPersonPhone()));
-        Personal.appendChild(TempAttr);
+        Commercial.appendChild(TempAttr);
         
         //Just create the Accounts container
-        TempAttr = CustomerDoc.createElement("accounts");
-        Personal.appendChild(TempAttr);
+        TempAttr = CustomerDoc.createElement("Accounts");
+        Commercial.appendChild(TempAttr);
         
+        //Add an account to a created customer
+        Element CustomerAccountElem = CreateAccount(CustomerDoc, mainFrame, cCustomer);
+        
+        //Add the CustomerAccountElement to the Customer element
+        Commercial.appendChild(CustomerAccountElem);
         //Add the node to the CustomerDoc
-        CustomerDoc.appendChild(Personal);
+        CustomerDoc.appendChild(Commercial);
         
-    }
-    
-    private static void CreateAccount(Document CustomerDoc, Account cAccount, JFrame mainFrame){
-        //TODO
-        Element aElem = CustomerDoc.createElement("account");
-        aElem.setAttribute("accoundno", Long.toString(cAccount.getAccountNo()));
-        //aElem.setAttribute("accountbalance", )
+        //Save the entire file
         SaveCustomerFile(CustomerDoc, mainFrame);
     }
     
-    private static void CreateTransaction(Document CustomerDoc, Transaction t){
-        //TODO
+    private static Element CreateAccount(Document CustomerDoc, JFrame mainFrame, Customer Cust){
+        Account cAccount = new Account();
+        Element AccountElem = CustomerDoc.createElement("Account");
+        AccountElem.setAttribute("AccoundNo", Long.toString(cAccount.getAccountNo()));
+        AccountElem.setAttribute("AccountBalance", Double.toString(cAccount.getAccountBalance()));
+        AccountElem.setAttribute("DateOpened", cAccount.getDateOpened());
+        if (Cust instanceof CommercialCustomer)
+            cAccount.setCommercialInterestRate(Cust);
+        AccountElem.setAttribute("InterestRate", Double.toString(cAccount.getInterestRate()));
+        Element TransactionElement = CustomerDoc.createElement("Transactions");
+        AccountElem.appendChild(TransactionElement);
+        return AccountElem;
+    }
+    
+    private static void CreateTransaction(Document CustomerDoc, Transaction t, Account a){
+        
     }
     
     private static void SaveCustomerFile(Document CustomerDoc, JFrame mainFrame){
@@ -158,6 +179,8 @@ public final class XMLHelper {
                 f.delete();
             }
             StreamResult Result = new StreamResult(f);
+            Trans.setOutputProperty(OutputKeys.INDENT, "yes");
+            Trans.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
             Trans.transform(source, Result);
         }
         catch(TransformerException ex){

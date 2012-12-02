@@ -1,1 +1,30 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><customers><customer id="1354064253" type="personal"><name>dasdsad</name><address>dasdasd</address><homephone>dasdasd</homephone><workphone>dasdads</workphone><accounts/></customer><customer id="1354064480" type="personal"><name>Jack</name><address>W</address><homephone>3423432</homephone><workphone>34234324</workphone><accounts/></customer><customer id="1354064487" type="personal"><name>dsdas</name><address>dasd</address><homephone>asdsadasd</homephone><workphone>342432</workphone><accounts/></customer></customers>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Customers>
+    <Customer AccountType="Personal" Id="1354489855">
+        <name>Adrian Krzeszkiewicz</name>
+        <Address>Chicago</Address>
+        <HomePhone>77727</HomePhone>
+        <WorkPhone>2343432</WorkPhone>
+        <Account AccoundNo="1354489855" AccountBalance="0.0" DateOpened="2012/11/2" InterestRate="0.03">
+            <Transactions/>
+        </Account>
+    </Customer>
+<Customer AccountType="Personal" Id="1354489867">
+        <name>Iwona Pajor</name>
+        <Address>Octavia</Address>
+        <HomePhone>3433</HomePhone>
+        <WorkPhone>2334</WorkPhone>
+        <Account AccoundNo="1354489867" AccountBalance="0.0" DateOpened="2012/11/2" InterestRate="0.03">
+            <Transactions/>
+        </Account>
+    </Customer>
+<Customer AccountType="Personal" Id="1354491186">
+        <name>Zygi</name>
+        <Address>South</Address>
+        <HomePhone>Zygi</HomePhone>
+        <WorkPhone>dsadasda</WorkPhone>
+        <Account AccoundNo="1354491186" AccountBalance="0.0" DateOpened="2012/11/2" InterestRate="0.03">
+            <Transactions/>
+        </Account>
+    </Customer>
+</Customers>
