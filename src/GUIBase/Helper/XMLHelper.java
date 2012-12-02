@@ -138,7 +138,7 @@ public final class XMLHelper {
         //TODO
         Element aElem = CustomerDoc.createElement("account");
         aElem.setAttribute("accoundno", Long.toString(cAccount.getAccountNo()));
-        aElem.setAttribute("accountbalance", )
+        //aElem.setAttribute("accountbalance", )
         SaveCustomerFile(CustomerDoc, mainFrame);
     }
     
