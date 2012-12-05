@@ -1,30 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Customers>
-    <Customer AccountType="Personal" Id="1354489855">
-        <name>Adrian Krzeszkiewicz</name>
-        <Address>Chicago</Address>
-        <HomePhone>77727</HomePhone>
-        <WorkPhone>2343432</WorkPhone>
-        <Account AccoundNo="1354489855" AccountBalance="0.0" DateOpened="2012/11/2" InterestRate="0.03">
-            <Transactions/>
-        </Account>
-    </Customer>
-<Customer AccountType="Personal" Id="1354489867">
-        <name>Iwona Pajor</name>
-        <Address>Octavia</Address>
-        <HomePhone>3433</HomePhone>
-        <WorkPhone>2334</WorkPhone>
-        <Account AccoundNo="1354489867" AccountBalance="0.0" DateOpened="2012/11/2" InterestRate="0.03">
-            <Transactions/>
-        </Account>
-    </Customer>
-<Customer AccountType="Personal" Id="1354491186">
-        <name>Zygi</name>
-        <Address>South</Address>
-        <HomePhone>Zygi</HomePhone>
-        <WorkPhone>dsadasda</WorkPhone>
-        <Account AccoundNo="1354491186" AccountBalance="0.0" DateOpened="2012/11/2" InterestRate="0.03">
-            <Transactions/>
-        </Account>
-    </Customer>
+     <Customer AccountType="Personal" Id="1354669905">
+          <name>Adrian</name>
+          <Address>Clark Street</Address>
+          <HomePhone>433</HomePhone>
+          <WorkPhone>443234</WorkPhone>
+          <Account AccountBalance="300.6307" AccountNo="1354669905" DateOpened="2012/11/4" InterestRate="0.03">
+               <Transactions>
+                    <Transaction GoldWeight="1.0" PlatinumWeight="1.0" SilverWeight="1.0" TransactionDate="2012/11/4" TransactionId="1354670060" TransactionTotal="3429.23"/>
+               <Transaction GoldWeight="1.0" PlatinumWeight="1.0" SilverWeight="1.0" TransactionDate="2012/11/4" TransactionId="1354670101" TransactionTotal="3429.23"/>
+               <Transaction GoldWeight="1.0" PlatinumWeight="1.0" SilverWeight="0.0" TransactionDate="2012/11/4" TransactionId="1354670784" TransactionTotal="3394.3"/>
+               <Transaction TransactionDate="2012/11/4" TransactionId="1354673532" TransactionTotal="8.0" TransactionType="Withdrawal"/>
+               </Transactions>
+          </Account>
+     </Customer>
+<Customer AccountType="Personal" Id="1354674479">
+          <name>Valerie</name>
+          <Address>S</Address>
+          <HomePhone>r453</HomePhone>
+          <WorkPhone>84756</WorkPhone>
+          <Account AccountBalance="0.0" AccountNo="1354674479" DateOpened="2012/11/4" InterestRate="0.03">
+               <Transactions/>
+          </Account>
+     </Customer>
 </Customers>

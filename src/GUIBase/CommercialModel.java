@@ -21,8 +21,8 @@ public class CommercialModel {
     //Controls
     private JLabel lblName = new JLabel("Commercial Customer Name");
     private JLabel lblAddress = new JLabel("Commercial Customer Address");
-    private JLabel lblContactPerson = new JLabel("Commercial Customer Home Phone");
-    private JLabel lblContactPersonPhone = new JLabel("Commercial Customer Work Phone");
+    private JLabel lblContactPerson = new JLabel("Commercial Customer Contact");
+    private JLabel lblContactPersonPhone = new JLabel("Commercial Customer Contact Phone");
     
     private JTextField txtName = new JTextField();
     private JTextField txtAddress = new JTextField();
@@ -83,8 +83,8 @@ public class CommercialModel {
         CommercialModelWrapper.add(pnlAddress, FlowLayout.LEFT);
         CommercialModelWrapper.add(pnlName, FlowLayout.LEFT);
         //Add the event handler to the button
-        btnCancel.addActionListener(new PersonalModel_btnCancel_Handler(mainFrame));
-        btnAddCommercial.addActionListener(new PersonalModel_btnAddNew_Handler(mainFrame, txtName, txtAddress, txtContactPerson, txtContactPersonPhone));
+        btnCancel.addActionListener(new btnCancel_Handler(mainFrame));
+        btnAddCommercial.addActionListener(new CommercialModel_btnAddNew_Handler(mainFrame, txtName, txtAddress, txtContactPerson, txtContactPersonPhone));
     }
     
     public JPanel getContentPanel(){

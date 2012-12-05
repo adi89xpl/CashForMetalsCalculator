@@ -76,7 +76,6 @@ public class PersonalModel {
         pnlButtons.add(btnAddPersonal);
         pnlButtons.add(btnCancel);
         
-        //Container framePane = frame.getContentPane();
         PersonalModelWrapper.setLayout(new FlowLayout());
         PersonalModelWrapper.add(pnlButtons, FlowLayout.LEFT);
         PersonalModelWrapper.add(pnlWorkPhone, FlowLayout.LEFT);
@@ -84,7 +83,7 @@ public class PersonalModel {
         PersonalModelWrapper.add(pnlAddress, FlowLayout.LEFT);
         PersonalModelWrapper.add(pnlName, FlowLayout.LEFT);
         //Add the event handler to the button
-        btnCancel.addActionListener(new PersonalModel_btnCancel_Handler(mainFrame));
+        btnCancel.addActionListener(new btnCancel_Handler(mainFrame));
         btnAddPersonal.addActionListener(new PersonalModel_btnAddNew_Handler(mainFrame, txtName, txtAddress, txtHomePhone, txtWorkPhone));
     }
     

@@ -64,7 +64,7 @@ public class PersonalModel_btnAddNew_Handler implements ActionListener {
             }
             JOptionPane.showMessageDialog(mainFrame, "The Customer Has Been Succefully Addeded", null, JOptionPane.INFORMATION_MESSAGE);
             GUIModel GUI = new GUIModel();
-            GUIHelper.SetDisplay(mainFrame, GUI.getContentPanel(), "Create Personal Customer");
+            GUIHelper.SetDisplay(mainFrame, GUI.getContentPanel(), "Cash For Metals Calculator");
             GUI.addEventHandlers(mainFrame);
         }
     }

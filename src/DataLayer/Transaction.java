@@ -21,29 +21,35 @@ public class Transaction {
         TransactionTotal = 0.0;
     }
     //goldWeight Getter & Setter
-    private double getGoldWeight(){
+    public double getGoldWeight(){
         return goldWeight;
     }
-    private void setGoldWeight(double gWeight){
+    public void setGoldWeight(double gWeight){
         goldWeight = gWeight;
     }
     //platinumWeight Getter & Setter
-    private double getPlatinumWeight(){
+    public double getPlatinumWeight(){
         return platinumWeight;
     }
-    private void setPlatinumWeight(double pWeight){
+    public void setPlatinumWeight(double pWeight){
         platinumWeight = pWeight;
     }
     //silverWeight Getter & Setter
-    private double getSilverWeight(){
+    public double getSilverWeight(){
         return silverWeight;
     }
-    private void setSilverWeight(double sWeight){
+    public void setSilverWeight(double sWeight){
         silverWeight = sWeight;
     }
     //TransactionTotal Getter
-    private double getTransactionTotal(){
-        TransactionTotal = (goldWeight * Constants.GOLD_VALUE) + (platinumWeight * Constants.PLATINU_VALUE) + (silverWeight * Constants.SILVER_VALUE);
+    public double getTransactionTotal(){
+        TransactionTotal = (goldWeight * Constants.GOLD_VALUE) + (platinumWeight * Constants.PLATINUM_VALUE) + (silverWeight * Constants.SILVER_VALUE);
         return TransactionTotal;
+    }
+    public String getTransactionDate(){
+        return TransactionDate.get(Calendar.YEAR) + "/" + TransactionDate.get(Calendar.MONTH) + "/" + TransactionDate.get(Calendar.DAY_OF_MONTH);
+    }
+    public long getTransactionID(){
+        return TransactionID;
     }
 }

@@ -7,14 +7,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 
-public class PersonalModel_btnCancel_Handler implements ActionListener{
+public class btnCancel_Handler implements ActionListener{
     private JFrame mainFrame;
-    public PersonalModel_btnCancel_Handler(JFrame mFrame){
+    public btnCancel_Handler(JFrame mFrame){
         mainFrame = mFrame;
     }
     public void actionPerformed(ActionEvent e) {
         GUIModel GUI = new GUIModel();
-        GUIHelper.SetDisplay(mainFrame, GUI.getContentPanel(), "Create Personal Customer");
+        GUIHelper.SetDisplay(mainFrame, GUI.getContentPanel(), "Cash For Metals Calculator");   
         GUI.addEventHandlers(mainFrame);
     }
 }

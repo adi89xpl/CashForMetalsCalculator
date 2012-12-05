@@ -29,19 +29,19 @@ public class CommercialModel_btnAddNew_Handler implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         boolean bError = false;
         if(cName.getText().isEmpty()){
-            JOptionPane.showMessageDialog(mainFrame, "Please Provide the Customer Name", null, JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(mainFrame, "Please Provide the Commercial Customer Name", null, JOptionPane.INFORMATION_MESSAGE);
             bError = true;
         }
         else if(cAddress.getText().isEmpty()){
-            JOptionPane.showMessageDialog(mainFrame, "Please Provide the Customer Address", null, JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(mainFrame, "Please Provide the Commecial Customer Address", null, JOptionPane.INFORMATION_MESSAGE);
             bError = true;
         }
         else if(cContactPerson.getText().isEmpty()){
-            JOptionPane.showMessageDialog(mainFrame, "Please Provide the Customer Home Phone", null, JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(mainFrame, "Please Provide the Commercial Customer Contact", null, JOptionPane.INFORMATION_MESSAGE);
             bError = true;
         }
         else if(cContactPersonPhone.getText().isEmpty()){
-            JOptionPane.showMessageDialog(mainFrame, "Please Provide the Customer Work Phone", null, JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(mainFrame, "Please Provide the Commercial Customer Contact Phone", null, JOptionPane.INFORMATION_MESSAGE);
             bError = true;
         }
         if(!bError){

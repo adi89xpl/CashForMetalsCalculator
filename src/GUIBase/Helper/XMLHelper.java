@@ -20,6 +20,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public final class XMLHelper {
@@ -74,7 +75,6 @@ public final class XMLHelper {
             System.exit(1);
         }
         return CustomerDoc;
-        
     }
     
     public static void AddPersonal(Document CustomerDoc, PersonalCustomer pCustomer, JFrame mainFrame){
@@ -133,26 +133,24 @@ public final class XMLHelper {
         TempAttr.appendChild(CustomerDoc.createTextNode(cCustomer.getContactPersonPhone()));
         Commercial.appendChild(TempAttr);
         
-        //Just create the Accounts container
-        TempAttr = CustomerDoc.createElement("Accounts");
-        Commercial.appendChild(TempAttr);
-        
         //Add an account to a created customer
         Element CustomerAccountElem = CreateAccount(CustomerDoc, mainFrame, cCustomer);
         
         //Add the CustomerAccountElement to the Customer element
         Commercial.appendChild(CustomerAccountElem);
-        //Add the node to the CustomerDoc
-        CustomerDoc.appendChild(Commercial);
+        
+        //Add the node to the CustomerDoc root element ("Customer")
+        Element Root = CustomerDoc.getDocumentElement();
+        Root.appendChild(Commercial);
         
         //Save the entire file
-        SaveCustomerFile(CustomerDoc, mainFrame);
+       SaveCustomerFile(CustomerDoc, mainFrame);
     }
     
     private static Element CreateAccount(Document CustomerDoc, JFrame mainFrame, Customer Cust){
         Account cAccount = new Account();
         Element AccountElem = CustomerDoc.createElement("Account");
-        AccountElem.setAttribute("AccoundNo", Long.toString(cAccount.getAccountNo()));
+        AccountElem.setAttribute("AccountNo", Long.toString(cAccount.getAccountNo()));
         AccountElem.setAttribute("AccountBalance", Double.toString(cAccount.getAccountBalance()));
         AccountElem.setAttribute("DateOpened", cAccount.getDateOpened());
         if (Cust instanceof CommercialCustomer)
@@ -163,9 +161,122 @@ public final class XMLHelper {
         return AccountElem;
     }
     
-    private static void CreateTransaction(Document CustomerDoc, Transaction t, Account a){
+    public static void CreateTransaction(JFrame mainFrame, Transaction t, long CustId){
+        Document CustomerDoc = OpenCustomerFile(mainFrame);
+        Element Tran = CustomerDoc.createElement("Transaction");
+        Tran.setAttribute("TransactionId", Core.toString(t.getTransactionID()));
+        Tran.setAttribute("TransactionDate", t.getTransactionDate());
+        Tran.setAttribute("GoldWeight", Core.toString(t.getGoldWeight()));
+        Tran.setAttribute("PlatinumWeight", Core.toString(t.getPlatinumWeight()));
+        Tran.setAttribute("SilverWeight", Core.toString(t.getSilverWeight()));
+        Tran.setAttribute("TransactionTotal", Core.toString(t.getTransactionTotal()));
+        Tran.setAttribute("TransactionType", "Deposit");
+        Element Customer = GetCustomer(mainFrame, CustId, CustomerDoc);
+        NodeList Transactions = Customer.getElementsByTagName("Transactions");
+        for(int i = 0; i < Transactions.getLength(); i++){
+            if (Transactions.item(i).getNodeName() == "#text")
+                continue;
+            Element Current = (Element)Transactions.item(i);
+            Current.appendChild(CustomerDoc.importNode(Tran, true));
+            break;
+        }
         
+        NodeList Accounts = Customer.getElementsByTagName("Account");
+        for(int i = 0; i < Accounts.getLength(); i++){
+            if (Accounts.item(i).getNodeName() == "#text")
+                continue;
+            Element Current = (Element)Accounts.item(i);
+            long AccountId = Core.toLong(Current.getAttribute("AccountNo"));
+            String DateOpened = Current.getAttribute("DateOpened");
+            double AccountBalance = Core.toDouble(Current.getAttribute("AccountBalance"));
+            boolean IsCommercial = false;
+            String AccountType = Customer.getAttribute("AccountType");
+            if (AccountType.toLowerCase() == "commercial")
+                IsCommercial = true;
+            Account Acct = new Account(AccountId, AccountBalance, DateOpened, IsCommercial);
+            Acct.makeDeposit(t.getGoldWeight(), t.getPlatinumWeight(), t.getGoldWeight());
+            Current.setAttribute("AccountBalance", Core.toString(Acct.getAccountBalance()));
+            break;
+        }
+        SaveCustomerFile(CustomerDoc, mainFrame);
     }
+    
+    public static void CreateTransaction(JFrame mainFrame, long CustId, long TransactionId, String TransactionDate, double withdrawAmount){
+        Document CustomerDoc = OpenCustomerFile(mainFrame);
+        Element Tran = CustomerDoc.createElement("Transaction");
+        Tran.setAttribute("TransactionId", Core.toString(TransactionId));
+        Tran.setAttribute("TransactionDate", TransactionDate);
+        //Tran.setAttribute("GoldWeight", Core.toString(t.getGoldWeight()));
+        //Tran.setAttribute("PlatinumWeight", Core.toString(t.getPlatinumWeight()));
+        //Tran.setAttribute("SilverWeight", Core.toString(t.getSilverWeight()));
+        Tran.setAttribute("TransactionTotal", Core.toString(withdrawAmount));
+        Tran.setAttribute("TransactionType", "Withdrawal");
+        Element Customer = GetCustomer(mainFrame, CustId, CustomerDoc);
+        NodeList Transactions = Customer.getElementsByTagName("Transactions");
+        for(int i = 0; i < Transactions.getLength(); i++){
+            if (Transactions.item(i).getNodeName() == "#text")
+                continue;
+            Element Current = (Element)Transactions.item(i);
+            Current.appendChild(CustomerDoc.importNode(Tran, true));
+            break;
+        }
+        
+        NodeList Accounts = Customer.getElementsByTagName("Account");
+        for(int i = 0; i < Accounts.getLength(); i++){
+            if (Accounts.item(i).getNodeName() == "#text")
+                continue;
+            Element Current = (Element)Accounts.item(i);
+            long AccountId = Core.toLong(Current.getAttribute("AccountNo"));
+            String DateOpened = Current.getAttribute("DateOpened");
+            double AccountBalance = Core.toDouble(Current.getAttribute("AccountBalance"));
+            boolean IsCommercial = false;
+            String AccountType = Customer.getAttribute("AccountType");
+            if (AccountType.toLowerCase() == "commercial")
+                IsCommercial = true;
+            Account Acct = new Account(AccountId, AccountBalance, DateOpened, IsCommercial);
+            //Acct.makeDeposit(t.getGoldWeight(), t.getPlatinumWeight(), t.getGoldWeight());
+            Acct.makeWithdrawal(withdrawAmount);
+            Current.setAttribute("AccountBalance", Core.toString(Acct.getAccountBalance()));
+            break;
+        }
+        SaveCustomerFile(CustomerDoc, mainFrame);
+    }
+    
+    public static long CustomerLookup(JFrame mainFrame, int lookupValue){
+        long CustomerId = 0;
+        if (CustomerFileExists()){
+            Element Root = OpenCustomerFile(mainFrame).getDocumentElement();
+            if(Root.hasChildNodes()){
+                NodeList Customers = Root.getChildNodes();
+                for(int i = 0; i <Customers.getLength(); i++){
+                    if (Customers.item(i).getNodeName() == "#text")
+                        continue;
+                    Element Current = (Element)Customers.item(i);
+                    if(lookupValue == Integer.parseInt(Current.getAttribute("Id"))){
+                        CustomerId = Integer.parseInt(Current.getAttribute("Id"));
+                    }
+                }
+            }
+        }
+        return CustomerId;
+    } 
+    
+    public static Element GetCustomer(JFrame mainFrame, long lookupValue, Document CustomerDoc){
+        Element Customer = null;
+        Element Root = CustomerDoc.getDocumentElement();
+        if(Root.hasChildNodes()){
+            NodeList Customers = Root.getChildNodes();
+            for(int i = 0; i <Customers.getLength(); i++){
+                if (Customers.item(i).getNodeName() == "#text")
+                    continue;
+                Element Current = (Element)Customers.item(i);
+                if(lookupValue == Integer.parseInt(Current.getAttribute("Id"))){
+                    Customer = Current;
+                }
+            }
+        }
+        return Customer;
+    } 
     
     private static void SaveCustomerFile(Document CustomerDoc, JFrame mainFrame){
         try {
@@ -180,7 +291,7 @@ public final class XMLHelper {
             }
             StreamResult Result = new StreamResult(f);
             Trans.setOutputProperty(OutputKeys.INDENT, "yes");
-            Trans.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+            Trans.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "5");
             Trans.transform(source, Result);
         }
         catch(TransformerException ex){
@@ -189,4 +300,11 @@ public final class XMLHelper {
             System.exit(1);
         }
     }
+    
+    public static String getCustomerDisplayData(long CustomerId){
+        StringBuilder sb = new StringBuilder();
+        
+        return sb.toString();
+    }
+            
 }

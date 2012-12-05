@@ -6,7 +6,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 public class Account {
     private long AccountNo;
@@ -56,7 +55,7 @@ public class Account {
     }
     //makeDeposit Method
     public void makeDeposit(double gWeight, double pWeight, double sWeight){
-        
+        AccountBalance += ((gWeight * Constants.GOLD_VALUE) + (pWeight * Constants.PLATINUM_VALUE) + (sWeight * Constants.SILVER_VALUE)) * InterestRate;
     }
     //makeWithdrawal Method
     public double makeWithdrawal(double withdrawAmount){

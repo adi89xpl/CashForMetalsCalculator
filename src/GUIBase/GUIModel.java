@@ -47,8 +47,6 @@ public class GUIModel {
         btnCreateCommercial.setPreferredSize(new Dimension(225, 50));
         btnCreatePersonal.setPreferredSize(new Dimension(225, 50));
         
-        
-        
         //Let's add the buttons to the panels and then panels to the wrapper panel
         pnlExit.add(btnExit);
         pnlDisplayGrandSummary.add(btnDisplayGrandSummary);
@@ -77,6 +75,9 @@ public class GUIModel {
         btnExit.addActionListener(new btnExit_Handler(mainFrame));
         btnCreatePersonal.addActionListener(new GUIModel_btnCreatePersonal_Handler(mainFrame));
         btnCreateCommercial.addActionListener(new GUIModel_btnCreateCommercial_Handler(mainFrame));
+        btnRecordTransaction.addActionListener(new GUIModel_btnCreateTransaction_Handler(mainFrame));
+        btnRecordWithdrawal.addActionListener(new GUIModel_btnRecordWithdrawal_Handler(mainFrame));
+        btnDisplayCustomer.addActionListener(new GUIModel_btnDisplayCustomer_Handler(mainFrame));
     }
     
     public JPanel getContentPanel(){
