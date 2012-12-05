@@ -2,6 +2,7 @@ package GUIBase;
 
 import GUIBase.EventHandlers.DisplayCustomerModel_btnSearch_Handler;
 import GUIBase.EventHandlers.btnCancel_Handler;
+import GUIBase.Helper.XMLHelper;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import javax.swing.JButton;
@@ -11,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 
 public class DisplayCustomerModel {
     //wrappers
@@ -25,6 +27,8 @@ public class DisplayCustomerModel {
     private JLabel lblSearch = new JLabel("Customer Lookup");
     
     private JLabel lblCustomerInfo = new JLabel("Customer Info");
+    //button
+    private JButton btnGoBack = new JButton("Back");
     //Textboxes
     private JTextField txtSearch = new JTextField();
     
@@ -32,7 +36,6 @@ public class DisplayCustomerModel {
     private JScrollPane DisplayAreaScroll = new JScrollPane();
     //buttons
     private JButton btnSearch = new JButton("Search");
-    private JButton btnCancel = new JButton("Cancel");
     
     private JFrame mainFrame;
     //This variable holds the Id Of the customer/ if found
@@ -55,27 +58,19 @@ public class DisplayCustomerModel {
         lblSearch.setHorizontalAlignment(JLabel.CENTER);
         txtSearch.setPreferredSize(new Dimension(250, 20));
         btnSearch.setPreferredSize(new Dimension(200, 35));
-        btnCancel.setPreferredSize(new Dimension(200, 35));
         pnlSearch.add(lblSearch);
         pnlSearch.add(txtSearch);
         pnlSearch.add(btnSearch);
-        pnlSearch.add(btnCancel);
         DisplayModelSearchWrapper.add(pnlSearch, FlowLayout.LEFT);
         
         lblCustomerInfo.setPreferredSize(new Dimension(450, 20));
         lblCustomerInfo.setHorizontalAlignment(JLabel.CENTER);
-        txtDisplayArea.setPreferredSize(new Dimension(450, 240));
-        DisplayAreaScroll = new JScrollPane(txtDisplayArea);
         pnlDisplay.add(lblCustomerInfo);
-        //pnlDisplay.add(txtDisplayArea);
-        pnlDisplay.add(DisplayAreaScroll);
         
-        //DisplayModelWrapper.add(btnCancel, FlowLayout.LEFT);
         DisplayModelWrapper.add(pnlDisplay, FlowLayout.LEFT);
                
-        btnCancel.addActionListener(new btnCancel_Handler(mainFrame));
+        btnGoBack.addActionListener(new btnCancel_Handler(mainFrame));
         btnSearch.addActionListener(new DisplayCustomerModel_btnSearch_Handler(mainFrame, txtSearch));
-        
     }
     
      public JPanel getSearchPanel(){
@@ -92,6 +87,14 @@ public class DisplayCustomerModel {
     }
      
      private void DisplayCustomer(long cId){
-         
+         String Data = XMLHelper.getCustomerDisplayData(mainFrame, CustomerId);
+         txtDisplayArea.setText(Data);
+         txtDisplayArea.setCaretPosition(0);
+         txtDisplayArea.setEditable(false);
+         DisplayAreaScroll = new JScrollPane(txtDisplayArea);
+         DisplayAreaScroll.setPreferredSize(new Dimension(450, 185));
+         pnlDisplay.add(DisplayAreaScroll);
+         btnGoBack.setPreferredSize(new Dimension(200, 30));
+         pnlDisplay.add(btnGoBack);
      }
 }

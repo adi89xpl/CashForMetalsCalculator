@@ -20,6 +20,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -82,7 +83,7 @@ public final class XMLHelper {
         Personal.setAttribute("Id", Long.toString(pCustomer.getCustomerID()));
         Personal.setAttribute("AccountType", "Personal");
         
-        Element TempAttr = CustomerDoc.createElement("name");
+        Element TempAttr = CustomerDoc.createElement("Name");
         TempAttr.appendChild(CustomerDoc.createTextNode(pCustomer.getName()));
         Personal.appendChild(TempAttr);
         
@@ -301,10 +302,115 @@ public final class XMLHelper {
         }
     }
     
-    public static String getCustomerDisplayData(long CustomerId){
+    public static String getCustomerDisplayData(JFrame mainFrame,long CustomerId){
         StringBuilder sb = new StringBuilder();
-        
+        if(CustomerFileExists()){
+            Document CustomerDoc = OpenCustomerFile(mainFrame);
+            Element Customer = GetCustomer(mainFrame, CustomerId, CustomerDoc);
+            GetXMLData(Customer, sb);
+        }
+        else{
+            JOptionPane.showMessageDialog(mainFrame, "The Customer File Does Not Exist.");
+            return "";
+        }
         return sb.toString();
+    }
+    
+    public static String getCustomerSummaryDisplayData(JFrame mainFrame){
+        StringBuilder sb = new StringBuilder();
+        if(CustomerFileExists()){
+           NodeList Accounts = OpenCustomerFile(mainFrame).getElementsByTagName("Account");
+           sb.append("Customer Count: " + Accounts.getLength() + "\n");
+           double Total = 0;
+           for (int i = 0; i < Accounts.getLength(); i++){
+                Node AccountNode = Accounts.item(i);
+                if (AccountNode.getNodeName() == "#text")
+                    continue;
+                Element AccountElem = (Element)AccountNode;
+                Total += Core.toDouble(AccountElem.getAttribute("AccountBalance"));
+           }
+           sb.append("Total Value of All Accounts: " + StringFormatter.formatMoney(Total));
+        }
+        else{
+            JOptionPane.showMessageDialog(mainFrame, "The Customer File Does Not Exist.");
+            return "";
+        }
+        return sb.toString();
+    }
+    
+    private static void GetXMLData(Element Customer, StringBuilder sb){
+        DisplayHeader(sb);
+        NodeList ns = Customer.getChildNodes();
+        sb.append("Customer ID: " + Customer.getAttribute("Id") + "\n");
+        sb.append("Customer Type: " + Customer.getAttribute("AccountType") + "\n");
+        for (int i = 0; i < ns.getLength(); i++){
+            Node Elem = ns.item(i);
+            if (Elem.getNodeName() == "#text")
+                continue;
+            if (Elem.getNodeName() == "Name"){
+                sb.append("Customer Name: " + Elem.getTextContent()+ "\n");
+                continue;
+            }
+            if (Elem.getNodeName() == "Address"){
+                sb.append("Customer Address: " + Elem.getTextContent() + "\n");
+                continue;
+            }
+            if (Elem.getNodeName() == "HomePhone"){
+                sb.append("Customer Home Phone: " + Elem.getTextContent() + "\n");
+                continue;
+            }   
+            if (Elem.getNodeName() == "WorkPhone"){
+                sb.append("Customer Work Phone: " + Elem.getTextContent() + "\n");
+                continue;
+            }
+            if (Elem.getNodeName() == "Account"){
+                Element AccountElem = (Element)Elem;
+                sb.append("Account Number: " + AccountElem.getAttribute("AccountNo") + "\n");
+                sb.append("Account Open Date: " + AccountElem.getAttribute("DateOpened") + "\n");
+                sb.append("Account Balance: " + StringFormatter.formatMoney(Core.toDouble(AccountElem.getAttribute("AccountBalance"))) + "\n");
+                sb.append("Account Interest Rate: " + AccountElem.getAttribute("InterestRate") + "\n");
+                NodeList Transactions = AccountElem.getElementsByTagName("Transaction");
+                if (Transactions.getLength() > 0){
+                    sb.append("\n");
+                    sb.append("***********************************\n");
+                    sb.append("*********  Transactions  *********\n");
+                    sb.append("***********************************\n\n");
+                    for (int j = 0; j < Transactions.getLength(); j++){
+                        Node Tran = Transactions.item(j);
+                        if (Tran.getNodeName() == "#text")
+                            continue;
+                        Element TranElem = (Element)Tran;
+                        sb.append("##### Transaction #####\n");
+                        String TranType = TranElem.getAttribute("TransactionType");
+                        if (TranType.equalsIgnoreCase("deposit")){
+                            sb.append("Transaction Type: Deposit\n" );
+                            sb.append("Transaction ID: " + TranElem.getAttribute("TransactionId")+ "\n");
+                            sb.append("Transaction Date: " + TranElem.getAttribute("TransactionDate") + "\n");
+                            sb.append("Transaction Gold Weight: " + StringFormatter.formatTwoDecimals(Core.toDouble(TranElem.getAttribute("GoldWeight"))) + "\n");
+                            sb.append("Transaction Platinum Weight: " + StringFormatter.formatTwoDecimals(Core.toDouble(TranElem.getAttribute("PlatinumWeight"))) + "\n");
+                            sb.append("Transaction Silver Weight: " + StringFormatter.formatTwoDecimals(Core.toDouble(TranElem.getAttribute("SilverWeight"))) + "\n");
+                            sb.append("Transaction Total: " + StringFormatter.formatMoney(Core.toDouble(TranElem.getAttribute("TransactionTotal"))));
+                        }
+                        else {
+                            sb.append("Transaction Type: Withdrawal\n" );
+                            sb.append("Transaction ID: " + TranElem.getAttribute("TransactionId")+ "\n");
+                            sb.append("Transaction Date: " + TranElem.getAttribute("TransactionDate") + "\n");
+                            sb.append("Transaction Total: " + StringFormatter.formatMoney(Core.toDouble(TranElem.getAttribute("TransactionTotal"))));
+                        }
+                        if (j != Transactions.getLength() - 1){
+                            sb.append("\n\n");
+                        }
+                    }
+                }
+                continue;
+            }
+        }
+    }
+    
+    private static void DisplayHeader(StringBuilder sb){
+        sb.append("***********************************\n");
+        sb.append("********* Customer Info *********\n");
+        sb.append("***********************************\n");
     }
             
 }

@@ -78,6 +78,7 @@ public class GUIModel {
         btnRecordTransaction.addActionListener(new GUIModel_btnCreateTransaction_Handler(mainFrame));
         btnRecordWithdrawal.addActionListener(new GUIModel_btnRecordWithdrawal_Handler(mainFrame));
         btnDisplayCustomer.addActionListener(new GUIModel_btnDisplayCustomer_Handler(mainFrame));
+        btnDisplayCustomerSummary.addActionListener(new GUIModel_btnDisplayCustomerSummary_Handler(mainFrame));
     }
     
     public JPanel getContentPanel(){
