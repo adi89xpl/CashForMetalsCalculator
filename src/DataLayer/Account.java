@@ -55,7 +55,12 @@ public class Account {
     }
     //makeDeposit Method
     public void makeDeposit(double gWeight, double pWeight, double sWeight){
-        AccountBalance += ((gWeight * Constants.GOLD_VALUE) + (pWeight * Constants.PLATINUM_VALUE) + (sWeight * Constants.SILVER_VALUE)) * (1 +InterestRate);
+        double goldTotal = gWeight * Constants.GOLD_VALUE;
+        double platinumTotal = pWeight * Constants.PLATINUM_VALUE;
+        double silverTotal = sWeight * Constants.SILVER_VALUE;
+        double depositTotal = goldTotal + platinumTotal + silverTotal;
+        depositTotal *= (1 + InterestRate);
+        AccountBalance += depositTotal;
     }
     //makeWithdrawal Method
     public double makeWithdrawal(double withdrawAmount){

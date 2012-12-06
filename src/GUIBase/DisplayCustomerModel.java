@@ -36,7 +36,8 @@ public class DisplayCustomerModel {
     private JScrollPane DisplayAreaScroll = new JScrollPane();
     //buttons
     private JButton btnSearch = new JButton("Search");
-    
+    private JButton btnCancel = new JButton("Cancel");
+     
     private JFrame mainFrame;
     //This variable holds the Id Of the customer/ if found
     private long CustomerId;
@@ -58,9 +59,12 @@ public class DisplayCustomerModel {
         lblSearch.setHorizontalAlignment(JLabel.CENTER);
         txtSearch.setPreferredSize(new Dimension(250, 20));
         btnSearch.setPreferredSize(new Dimension(200, 35));
+        btnCancel.setPreferredSize(new Dimension(200, 35));
         pnlSearch.add(lblSearch);
         pnlSearch.add(txtSearch);
         pnlSearch.add(btnSearch);
+        pnlSearch.add(btnCancel);
+        
         DisplayModelSearchWrapper.add(pnlSearch, FlowLayout.LEFT);
         
         lblCustomerInfo.setPreferredSize(new Dimension(450, 20));
@@ -70,6 +74,7 @@ public class DisplayCustomerModel {
         DisplayModelWrapper.add(pnlDisplay, FlowLayout.LEFT);
                
         btnGoBack.addActionListener(new btnCancel_Handler(mainFrame));
+        btnCancel.addActionListener(new btnCancel_Handler(mainFrame));
         btnSearch.addActionListener(new DisplayCustomerModel_btnSearch_Handler(mainFrame, txtSearch));
     }
     

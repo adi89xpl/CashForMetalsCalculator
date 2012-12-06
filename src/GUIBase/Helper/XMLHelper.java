@@ -24,6 +24,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+//This XMLHelper class is a helper class that is handling all of the XML file operations
 public final class XMLHelper {
     //Check if the file exists
     public static boolean CustomerFileExists(){
@@ -195,7 +196,7 @@ public final class XMLHelper {
             if (AccountType.toLowerCase() == "commercial")
                 IsCommercial = true;
             Account Acct = new Account(AccountId, AccountBalance, DateOpened, IsCommercial);
-            Acct.makeDeposit(t.getGoldWeight(), t.getPlatinumWeight(), t.getGoldWeight());
+            Acct.makeDeposit(t.getGoldWeight(), t.getPlatinumWeight(), t.getSilverWeight());
             Current.setAttribute("AccountBalance", Core.toString(Acct.getAccountBalance()));
             break;
         }
@@ -292,7 +293,7 @@ public final class XMLHelper {
             }
             StreamResult Result = new StreamResult(f);
             Trans.setOutputProperty(OutputKeys.INDENT, "yes");
-            Trans.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "5");
+            Trans.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "7");
             Trans.transform(source, Result);
         }
         catch(TransformerException ex){
@@ -307,6 +308,7 @@ public final class XMLHelper {
         if(CustomerFileExists()){
             Document CustomerDoc = OpenCustomerFile(mainFrame);
             Element Customer = GetCustomer(mainFrame, CustomerId, CustomerDoc);
+            DisplayHeader(sb);
             GetXMLData(Customer, sb);
         }
         else{
@@ -338,8 +340,28 @@ public final class XMLHelper {
         return sb.toString();
     }
     
+    public static String getGrandSummary(JFrame mainFrame){
+        StringBuilder sb = new StringBuilder();
+        if(CustomerFileExists()){
+            Document CustomerDoc = OpenCustomerFile(mainFrame);
+            NodeList Customers = CustomerDoc.getElementsByTagName("Customer");
+            for(int i = 0; i < Customers.getLength(); i++){
+                if (Customers.item(i).getNodeName() == "#text")
+                    continue;
+                DisplayHeader(sb, i + 1);
+                Element Customer = (Element)Customers.item(i);
+                GetXMLData(Customer, sb);
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(mainFrame, "The Customer File Does Not Exist.");
+            return "";
+        }
+        return sb.toString();
+    }
+    
     private static void GetXMLData(Element Customer, StringBuilder sb){
-        DisplayHeader(sb);
+        
         NodeList ns = Customer.getChildNodes();
         sb.append("Customer ID: " + Customer.getAttribute("Id") + "\n");
         sb.append("Customer Type: " + Customer.getAttribute("AccountType") + "\n");
@@ -410,6 +432,12 @@ public final class XMLHelper {
     private static void DisplayHeader(StringBuilder sb){
         sb.append("***********************************\n");
         sb.append("********* Customer Info *********\n");
+        sb.append("***********************************\n");
+    }
+    
+    private static void DisplayHeader(StringBuilder sb, int Count){
+        sb.append("***********************************\n");
+        sb.append("******** Customer " + Count + " Info ********\n");
         sb.append("***********************************\n");
     }
             

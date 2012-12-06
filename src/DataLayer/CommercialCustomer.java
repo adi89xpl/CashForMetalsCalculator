@@ -3,13 +3,13 @@ package DataLayer;
 public class CommercialCustomer extends Customer {
     private String ContactPerson;
     private String ContactPersonPhone;
-    
+    //default constructor
     public CommercialCustomer(){
         super();
         ContactPerson = "";
         ContactPersonPhone = "";
     }
-    
+    //parameterized constructor
     public CommercialCustomer(String cName){
         super(cName);
         ContactPerson = "";

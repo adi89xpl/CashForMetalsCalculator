@@ -3,6 +3,7 @@ import java.awt.*;
 import javax.swing.*;
 import GUIBase.EventHandlers.*;
 
+//This model is resonsible for the main menu of the application
 public class GUIModel {
     //Frame
     //private JFrame frame = new JFrame("Cash For Metals Calculator");
@@ -79,6 +80,7 @@ public class GUIModel {
         btnRecordWithdrawal.addActionListener(new GUIModel_btnRecordWithdrawal_Handler(mainFrame));
         btnDisplayCustomer.addActionListener(new GUIModel_btnDisplayCustomer_Handler(mainFrame));
         btnDisplayCustomerSummary.addActionListener(new GUIModel_btnDisplayCustomerSummary_Handler(mainFrame));
+        btnDisplayGrandSummary.addActionListener(new GUIModel_btnDisplayGrandSummary_Handler(mainFrame));
     }
     
     public JPanel getContentPanel(){

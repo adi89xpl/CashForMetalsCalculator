@@ -4,6 +4,7 @@ import java.util.*;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
+//This class is formatting Money, Percent and decimal formats
 public class StringFormatter {
  
     private static DecimalFormat moneyFormat = new DecimalFormat("$0.00"); 
